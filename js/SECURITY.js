@@ -13,37 +13,53 @@ import { getFingerprint } from './sha1.js';
         mouseMoveDebounceTime: 200
     };
 
+    const consoleOutputs = document.getElementById('consoleOutput');
+
     let config = { ...defaultConfig };
     let warningTimeout = null;
     let leaveCount = 0;
     let warningMessage, leaveCounter, consoleOutput;
     let mousePosition = { x: 0, y: 0 };
 
-    const logger = {
-        log: (message) => {
-            console.log(message);
-            if (consoleOutput) {
-                const p = document.createElement('p');
-                p.textContent = message;
-                consoleOutput.appendChild(p);
-            }
-        },
-        error: (message) => {
-            console.error(message);
-            if (consoleOutput) {
-                const p = document.createElement('p');
-                p.textContent = `Error: ${message}`;
-                p.style.color = 'red';
-                consoleOutput.appendChild(p);
-            }
-        }
-    };
+    const debug = (message, type = 'info') => {
+        const outputLine = document.createElement('div');
+        console.log(message);
+        outputLine.className = `output-line ${type}`;
+        outputLine.textContent = message;
+        consoleOutputs.appendChild(outputLine);
+        outputLine.offsetHeight;
+        setTimeout(() => {
+            outputLine.classList.add('visible');
+        }, 50);
+        consoleOutputs.scrollTop = consoleOutputs.scrollHeight;
+    }
+    
+
+    // const logger = {
+    //     log: (message) => {
+    //         console.log(message);
+    //         if (consoleOutput) {
+    //             const p = document.createElement('p');
+    //             p.textContent = message;
+    //             consoleOutput.appendChild(p);
+    //         }
+    //     },
+    //     error: (message) => {
+    //         console.error(message);
+    //         if (consoleOutput) {
+    //             const p = document.createElement('p');
+    //             p.textContent = `Error: ${message}`;
+    //             p.style.color = 'red';
+    //             consoleOutput.appendChild(p);
+    //         }
+    //     }
+    // };
 
     const safelySetStorageItem = (key, value) => {
         try {
             localStorage.setItem(key, value);
         } catch (e) {
-            logger.error(`[DEBUG - LSTORAGE] Error setting localStorage for key ${key}: ${e.message}`);
+            debug(`[DEBUG - LSTORAGE] Error setting localStorage for key ${key}: ${e.message}`, 'error');
         }
     };
 
@@ -51,7 +67,7 @@ import { getFingerprint } from './sha1.js';
         try {
             return localStorage.getItem(key);
         } catch (e) {
-            logger.error(`[DEBUG - LSTORAGE] Error accessing localStorage for key ${key}: ${e.message}`);
+            debug(`[DEBUG - LSTORAGE] Error accessing localStorage for key ${key}: ${e.message}`, 'error');
             return null;
         }
     };
@@ -120,7 +136,8 @@ import { getFingerprint } from './sha1.js';
     const handlePageExitEvent = (event) => {
         if (isUserLeavingPage(event)) {
             showWarning();
-            logger.log(`Potential page exit detected: ${event.type}`);
+            // logger.log(`Potential page exit detected: ${event.type}`);
+            debug(`Detected: ${event.type}`, 'warning');
         }
     };
 
@@ -171,7 +188,7 @@ import { getFingerprint } from './sha1.js';
         leaveCount = parseInt(safelyGetStorageItem(`${config.storageKey}-${fingerprint}`)) || 0;
         
         updateLeaveCounter();
-        logger.log(`Page exit detector initialized || with hash: ${fingerprint}`);
+        debug(`initialized || with hash: ${fingerprint}`);
     };
     
     // Public API
@@ -181,17 +198,17 @@ import { getFingerprint } from './sha1.js';
             leaveCount = 0;
             safelySetStorageItem(config.storageKey, leaveCount);
             updateLeaveCounter();
-            logger.log('Counter reset');
+            debug('Counter reset');
         },
         getLeaveCount: () => leaveCount,
         updateConfig: (newConfig) => {
             Object.assign(config, newConfig);
-            logger.log('Configuration updated');
+            debug('Configuration updated');
         }
     };
 
     if (typeof Storage === 'undefined') {
-        logger.error('LocalStorage is not supported in this browser. Some features may not work.');
+        debug('LocalStorage is not supported in this browser. Some features may not work.', 'error');
     }
 
     initialize();
