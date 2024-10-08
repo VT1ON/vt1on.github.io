@@ -13,8 +13,6 @@ import { getFingerprint } from './sha1.js';
         mouseMoveDebounceTime: 200
     };
 
-    const consoleOutputs = document.getElementById('consoleOutput');
-
     let config = { ...defaultConfig };
     let warningTimeout = null;
     let leaveCount = 0;
@@ -23,37 +21,29 @@ import { getFingerprint } from './sha1.js';
 
     const debug = (message, type = 'info') => {
         const outputLine = document.createElement('div');
-        console.log(message);
         outputLine.className = `output-line ${type}`;
-        outputLine.textContent = message;
-        consoleOutputs.appendChild(outputLine);
-        outputLine.offsetHeight;
-        setTimeout(() => {
-            outputLine.classList.add('visible');
-        }, 50);
-        consoleOutputs.scrollTop = consoleOutputs.scrollHeight;
-    }
     
-
-    // const logger = {
-    //     log: (message) => {
-    //         console.log(message);
-    //         if (consoleOutput) {
-    //             const p = document.createElement('p');
-    //             p.textContent = message;
-    //             consoleOutput.appendChild(p);
-    //         }
-    //     },
-    //     error: (message) => {
-    //         console.error(message);
-    //         if (consoleOutput) {
-    //             const p = document.createElement('p');
-    //             p.textContent = `Error: ${message}`;
-    //             p.style.color = 'red';
-    //             consoleOutput.appendChild(p);
-    //         }
-    //     }
-    // };
+        const timestamp = document.createElement('span');
+        timestamp.className = 'timestamp';
+        timestamp.textContent = new Date().toLocaleTimeString();
+    
+        const content = document.createElement('span');
+        content.className = 'content';
+        content.textContent = message;
+    
+        outputLine.append(timestamp, content);
+    
+        const consoleOutput = document.getElementById('consoleOutput');
+        consoleOutput.appendChild(outputLine);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    
+        setTimeout(() => {
+            outputLine.classList.add('new');
+            setTimeout(() => {
+                outputLine.classList.remove('new');
+            }, 2500);
+        });
+    };
 
     const safelySetStorageItem = (key, value) => {
         try {
@@ -136,7 +126,6 @@ import { getFingerprint } from './sha1.js';
     const handlePageExitEvent = (event) => {
         if (isUserLeavingPage(event)) {
             showWarning();
-            // logger.log(`Potential page exit detected: ${event.type}`);
             debug(`Detected: ${event.type}`, 'warning');
         }
     };
