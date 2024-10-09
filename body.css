@@ -42,16 +42,21 @@
     content: '';
     position: absolute;
     left: -2px;
-    top: 50%;
+    top: 75%;
     width: 1px;
     height: calc(100% + 3px);
     background-color: #72c4ff;
 }
 
 #consoleOutput .output-line.warning::before {
+    background-color: #ff9800;
+}
+
+#consoleOutput .output-line.warning::before {
     background-color: #ffb86c;
 }
 
+#consoleOutput .output-line.warning::after,
 #consoleOutput .output-line.error::before {
     background-color: #ff5555;
 }
@@ -67,65 +72,28 @@
     margin-right: 8px;
 }
 
-#consoleOutput .output-line.new::after {
-    content: 'NEW';
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #4CAF50;
-    color: white;
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 0.7em;
-    font-weight: bold;
-}
-
 #consoleOutput .output-line.new {
-    border-left: 3px solid #4CAF50;
     opacity: 1;
 }
 
-#warningMessage {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    max-width: 400px;
+#consoleOutput .output-line.warning-message {
+    background-color: rgba(255, 153, 0, 0.1);
+    padding: 4px 20px;
+    margin: 7px 0;
+}
+
+#consoleOutput .output-line.warning-message::before {
     background-color: #ff9800;
-    color: #ffffff;
-    padding: 20px 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
-    font-size: 18px;
-    line-height: 1.5;
-    z-index: 11000;
-    animation: slideIn 0.5s ease-out;
+    width: 12px;
+    height: 12px;
+    left: -7px;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+#consoleOutput .output-line.warning-message .timestamp {
+    color: #888;
+    margin-right: 10px;
 }
 
-#leaveCounter {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(240, 240, 240, 0.9);
-    color: #333;
-    padding: 10px 15px;
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 111000;
+#consoleOutput .output-line.warning-message span:not(.timestamp) {
+    flex-grow: 1;
 }

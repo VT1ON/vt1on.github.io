@@ -1,4 +1,4 @@
-import common from './common.js';
+import common from './function/common.js';
 // import ops from './ops.js';
 
 // Precomputed constants
