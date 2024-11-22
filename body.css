@@ -38,7 +38,7 @@
     z-index: 10000;
 }
 
-#consoleOutput .output-line:not(:last-child)::after {
+/* #consoleOutput .output-line:not(:last-child)::after {
     content: '';
     position: absolute;
     left: -2px;
@@ -46,7 +46,7 @@
     width: 1px;
     height: calc(100% + 3px);
     background-color: #72c4ff;
-}
+} */
 
 #consoleOutput .output-line.warning::before {
     background-color: #ff9800;

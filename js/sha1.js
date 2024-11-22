@@ -100,9 +100,7 @@ export function getFingerprint() {
     } catch (e) {
         console.warn('Unable to access localStorage:', e);
     }
-
     const components = [];
-
     // Screen Info
     const getStableScreenInfo = () => {
         const ratio = window.devicePixelRatio || 1;
@@ -212,7 +210,6 @@ export function getFingerprint() {
     } catch (e) {
         console.warn('Failed to store fingerprint in localStorage:', e);
     }
-
     return fingerprint;
 }
 

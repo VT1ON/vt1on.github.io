@@ -1,6 +1,7 @@
 import eventHandler from './function/eventHandler.js';
 import { debounce } from './function/debounce.js';
 import { debug } from './function/debug.js';
+// import { checkScreenSizeChange } from './function/screenSize.js';
 import { getFingerprint } from './sha1.js';
 
 (function () {
@@ -58,7 +59,6 @@ import { getFingerprint } from './sha1.js';
             }, config.warningDuration);
         }, config.warningDelay);
     };
-    
 
     const isUserLeavingPage = (event) => {
         if (!event) return document.hidden;
@@ -109,7 +109,6 @@ import { getFingerprint } from './sha1.js';
     const initializeElements = () => {
         warningMessage = document.getElementById(config.warningMessageId);
         consoleOutput = document.getElementById(config.consoleOutputId);
-
         if (warningMessage) {
             warningMessage.setAttribute('role', 'alert');
             warningMessage.setAttribute('aria-hidden', 'true');
